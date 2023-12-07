@@ -34,13 +34,12 @@ export const setLanguage = (language) => {
   const locations = JSON.parse(localStorage.getItem("locations")) || {};
   locations.language = language;
   localStorage.setItem("locations", JSON.stringify(locations));
-  if (language === "VN") {
-    languagePack = vn;
-  } else {
-    languagePack = en;
-  }
+  location.reload()
 };
-
+export const getLanguage = () => {
+  const locations = JSON.parse(localStorage.getItem("locations")) || {};
+  return locations.language 
+};
 export { languagePack,localtionsLang }; // Xuất biến languagePack trực tiếp
 
 async function languagesLocation() {

@@ -5,9 +5,6 @@
 }
 
 /* box */
-.box {
-    padding: 5px;
-}
 
 @keyframes gradient {
     0% {
@@ -22,18 +19,6 @@
         background-position: 0% 50%;
     }
 }
-
-.box_content {
-    background-color: tomato;
-    background: linear-gradient(-45deg, #ee7752, tomato, #82dcfd);
-    animation: gradient 15s ease infinite;
-    min-height: 100px;
-    cursor: pointer;
-    border-radius: 6px;
-    padding: 10px;
-    color: white;
-    text-align: center;
-}
 </style>
 <template>
     <div class="content">
@@ -41,46 +26,7 @@
             <div class="feature">
                 <div class="h4">Frequently used feature</div>
                 <div class="row">
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-time bx-tada bx-flip-vertical'></i> Schedule a sale hunt</h4>
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-wifi bx-tada bx-flip-vertical'></i> Track item prices</h4>
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-
-                        </div>
-                    </div>
+                    <Box :title="languagePack['AUTO_GROUP_POST']" @click="clickItem(1)" />
                 </div>
             </div>
             <div class="history">
@@ -92,8 +38,15 @@
     </div>
 </template>
 <script setup>
+import {
+    languagePack,
+    setLanguage,
+    LangList,
+    localtionsLang,
+} from '../../../../languages/index'
 import { ref,onMounted } from 'vue';
 import Loadding from '../Layouts/Loadding'
+import Box from '../Item/Box'
 const main = ref(false)
 onMounted(()=>{
     setTimeout(()=>{

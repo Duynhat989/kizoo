@@ -31,6 +31,7 @@
     </div>
 </template>
 <script setup>
+import { ref,onMounted } from 'vue';
 import {
   languagePack,
   setLanguage,
@@ -44,7 +45,6 @@ import Product from './Right/Product'
 import Setup from './Right/Setup'
 import Store from './Right/Store'
 import Utilities from './Right/Utilities'
-import { ref,onMounted } from 'vue';
 
 const { get_token_eaab,get_fb_dtsg } = require('../javascipt/request')
 const { set_token,get_token } = require('../javascipt/data')
@@ -61,10 +61,6 @@ onMounted(async ()=>{
         main.value = true
     },1000)
     document.title = languagePack["LOGIN_TITLE"];
-    // const token = await get_token_eaab()
-    // set_token(token)
-    // var fb_dtsg = await get_fb_dtsg()
-    // load_pending(fb_dtsg,"100042254226138")
 })
 
 

@@ -6,7 +6,6 @@
 
 .btn {
     background-color: #fd6044;
-    box-shadow: 0 2px 3px 0 #e9e9e991, 0 2px 4px rgba(233, 233, 233, 0.514)e9;
     border-radius: 7px;
     width: 100%;
     height: 55px;
@@ -14,11 +13,18 @@
     margin-top: 5px;
     text-align: start;
     padding: 0 30px;
+    transition: all 0.5;
+    box-shadow: 2px 2px 1px rgb(128 128 128 / 31%);
+}
+.btn:hover{
+    transform: scale(1.01);
 }
 .img-data{
     object-fit: cover;
     width: 100%;
     height: 150px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 .img{
     text-align: center;
@@ -45,9 +51,9 @@
             <i class='bx bx-git-compare' ></i> {{  languagePack["UTILITIES"] }}
         </button>
         <!-- Phần tool nhanh -->
-        <button class="btn" @click="changeValueAndEmit('STORE')">
+        <!-- <button class="btn" @click="changeValueAndEmit('STORE')">
             <i class='bx bxs-network-chart' ></i> {{  languagePack["ORTHER"] }}
-        </button>
+        </button> -->
         <!--  -->
         <button class="btn" @click="changeValueAndEmit('CONTACT')">
             <i class='bx bxs-contact' ></i> {{  languagePack["CONTACT"] }}
@@ -59,6 +65,7 @@
             <i class='bx bx-world' ></i> {{  languagePack["LANGUAGE"] }}
         </button>
     </div>
+    <PopLanguage v-if="setLang"/>
 </template>
 <script setup>
 
@@ -73,10 +80,9 @@ import {
   LangList,
   localtionsLang,
 } from '../../../languages/index'
+import PopLanguage from './Layouts/PopLanguage'
 const someValue = ref('');
 const setLang = ref(false);
-
-
 
 function changeValueAndEmit(route) {
     someValue.value = route;

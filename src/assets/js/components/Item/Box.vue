@@ -14,6 +14,12 @@
     padding: 20px;
     color: white;
     text-align: center;
+    border-radius: 7px;
+    transition: all 0.5;
+    box-shadow: 2px 2px 1px rgb(128 128 128 / 31%);
+}
+.box_content:hover{
+    transform: scale(1.01);
 }
 </style>
 
