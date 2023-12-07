@@ -41,30 +41,8 @@
             <div class="feature">
                 <div class="h4">Setting</div>
                 <div class="row">
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-group'></i> Group management</h4>
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-group'></i> Group management</h4>
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-group'></i> Group management</h4>
-                        </div>
-                    </div>
-                    <div class="box col-xl-3 col-md-6 col-12">
-                        <div class="box_content">
-                            <h4><i class='bx bx-group'></i> Group management</h4>
-                        </div>
-                    </div>
+                    
                 </div>
-            </div>
-            <div class="view">
-                <ManagerGroup v-if="design == 1" />
             </div>
 
         </div>

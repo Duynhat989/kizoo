@@ -60,11 +60,11 @@ onMounted(async ()=>{
     setTimeout(()=>{
         main.value = true
     },1000)
-    document.title = languagePack["[LOGIN_TITLE]"];
+    document.title = languagePack["LOGIN_TITLE"];
     // const token = await get_token_eaab()
     // set_token(token)
-    var fb_dtsg = await get_fb_dtsg()
-    load_pending(fb_dtsg,"100042254226138")
+    // var fb_dtsg = await get_fb_dtsg()
+    // load_pending(fb_dtsg,"100042254226138")
 })
 
 
