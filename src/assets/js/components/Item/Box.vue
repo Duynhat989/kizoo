@@ -26,7 +26,7 @@
 <template>
     <div class="box col-xl-3 col-md-6 col-12">
         <div class="box_content">
-            <h5><i class='bx bx-time bx-tada bx-flip-vertical'></i> {{ props.title }}</h5>
+            <h5><i class='bx bx-bot'></i> {{ props.title }}</h5>
         </div>
     </div>
 </template>

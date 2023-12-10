@@ -38,17 +38,29 @@ async function get_token_eaab() {
       method: "GET",
       redirect: "follow",
     };
-    let response = await fetch(
-      "https://facebook.com/adsmanager/",
+    var response = await fetch(
+      "https://www.facebook.com/dialog/oauth?scope=user_about_me,pages_read_engagement,user_actions.books,user_actions.fitness,user_actions.music,user_actions.news,user_actions.video,user_activities,user_birthday,user_education_history,user_events,user_friends,user_games_activity,user_groups,user_hometown,user_interests,user_likes,user_location,user_managed_groups,user_photos,user_posts,user_relationship_details,user_relationships,user_religion_politics,user_status,user_tagged_places,user_videos,user_website,user_work_history,email,manage_notifications,manage_pages,publish_actions,publish_pages,read_friendlists,read_insights,read_page_mailboxes,read_stream,rsvp_event,read_mailbox&response_type=token&client_id=124024574287414&redirect_uri=fb124024574287414://authorize/&sso_key=com&display=&fbclid=IwAR1KPwp2DVh2Cu7KdeANz-dRC_wYNjjHk5nR5F-BzGGj7-gTnKimAmeg08k",
       requestOptions
     );
     if (response.status === 200) {
       var data = await response.text();
-      var regex = /window\.location\.replace\("([^"]+)"\);/;
-      var match = regex.exec(data);
-      var act_id = match[1];
-      var correctedUrl = act_id.replace(/\/+(?=\?|$)/, "");
-      fb_token = await split_token_eaab(correctedUrl);
+      var fb_dtsg = get_value_with_name(
+        data,
+        /name=\\"fb_dtsg\\"\s+value=\\"(.*?)\\"/
+      );
+      var scope = get_value_with_name(
+        data,
+        /name=\\"scope\\"\s+value=\\"(.*?)\\"/
+      );
+      var encrypted_post_body = get_value_with_name(
+        data,
+        /name=\\"encrypted_post_body\\"\s+value=\\"(.*?)\\"/
+      );
+      var fb_token = await split_token_eaab(
+        scope,
+        fb_dtsg,
+        encrypted_post_body
+      );
       return fb_token;
     } else {
       return "false";
@@ -57,17 +69,42 @@ async function get_token_eaab() {
     return "error";
   }
 }
-async function split_token_eaab(act_id) {
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-  let response = await fetch(act_id, requestOptions);
-  if (response.status === 200) {
-    var data = await response.text();
-    var act_id = "EAA" + data.match('EAA(.*?)"')[1];
-    return act_id;
-  } else {
+const get_value_with_name = (string, scopeRegex) => {
+  const scopeMatch = string.match(scopeRegex);
+  return scopeMatch?.[1];
+};
+async function split_token_eaab(scope, fb_dtsg, encrypted_post_body) {
+  try {
+    var myHeaders = new Headers();
+    myHeaders.append("Sec-Fetch-Site", "same-origin");
+    myHeaders.append("Upgrade-Insecure-Requests", "1");
+    var formdata = new FormData();
+    formdata.append("fb_dtsg", fb_dtsg);
+    formdata.append("from_post", "1");
+    formdata.append("__CONFIRM__", "1");
+    formdata.append("scope", scope);
+    formdata.append("display", "page");
+    formdata.append("sso_device", "ios");
+    formdata.append("encrypted_post_body", encrypted_post_body);
+    formdata.append("return_format[]", "access_token");
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    let response = await fetch(
+      "https://www.facebook.com/v1.0/dialog/oauth/skip/submit/",
+      requestOptions
+    );
+    if (response.status === 200) {
+      var data = await response.text();
+      var act_id = "EAA" + data.match("EAA(.*?)&")[1];
+      return act_id;
+    } else {
+      return null;
+    }
+  } catch (error) {
     return null;
   }
 }
@@ -116,12 +153,11 @@ async function get_fb_dtsg() {
     }
   }
 }
-
 module.exports = {
-    joinGroup,
-    change_profile_user_id,
-    remove_profile_user_id,
-    get_token_eaab,
-    get_list_ads_account,
-    get_fb_dtsg
-}
+  joinGroup,
+  change_profile_user_id,
+  remove_profile_user_id,
+  get_token_eaab,
+  get_list_ads_account,
+  get_fb_dtsg,
+};

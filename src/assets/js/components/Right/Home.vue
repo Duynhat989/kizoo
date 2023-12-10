@@ -37,14 +37,22 @@ textarea{
                 <div class="row">
                     <Box :title="languagePack['AUTO_GROUP_POST']" @click="clickItem(1)" />
                     <Box :title="languagePack['AUTO_GROUP_MANAGER']" @click="clickItem(2)" />
+                    <Box :title="languagePack['AUTO_POST_SCHEDULE']" @click="clickItem(3)" />
+                    <Box :title="languagePack['AUTO_POST_PAGE']" @click="clickItem(4)" />
                 </div>
             </div>
             <div class="history">
                 <div class="AUTO_GROUP_POST" v-if="isUpPost == 1">
                     <AutoPost />
                 </div>
-                <div class="AUTO_GROUP_MANAGER" v-else>
+                <div class="AUTO_GROUP_MANAGER" v-else-if="isUpPost == 2">
                     <AutoApprove />
+                </div>
+                <div class="AUTO_GROUP_MANAGER" v-else-if="isUpPost == 4">
+                    <AutoPostPage />
+                </div>
+                <div class="AUTO_POST_SCHEDULE" v-else>
+                    {{ languagePack["UPDATE"] }}
                 </div>
             </div>
 
@@ -65,6 +73,7 @@ import Loadding from '../Layouts/Loadding'
 import Box from '../Item/Box'
 import AutoPost from '../Function/AutoPost'
 import AutoApprove from '../Function/AutoApprove'
+import AutoPostPage from '../Function/AutoPostPage'
 
 
 
@@ -74,9 +83,8 @@ const isUpPost = ref(1)
 onMounted(() => {
     setTimeout(() => {
         main.value = true
-    }, 2000)
+    }, 500)
 })
-console.log(languagePack)
 const clickItem = async (item) => {
     isUpPost.value = item
 }

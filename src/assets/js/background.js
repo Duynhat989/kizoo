@@ -32,24 +32,24 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   ["blocking", "requestHeaders", "extraHeaders"]
 );
 
-var script = document.createElement("script");
-script.src = chrome.extension.getURL("./js/socket.io.js");
-document.head.appendChild(script);
+// var script = document.createElement("script");
+// script.src = chrome.extension.getURL("./js/socket.io.js");
+// document.head.appendChild(script);
 
-let website = ""
+// let website = ""
 
-script.onload = async function () {
-  socket = io.connect(website);
-  socket.on("connected", async function () {
-    // socket.emit("info_connection", info);
-  });
-  socket.on("message", async function (data) {
-    // if (data.msg == "joinadmmin") {
+// script.onload = async function () {
+//   socket = io.connect(website);
+//   socket.on("connected", async function () {
+//     // socket.emit("info_connection", info);
+//   });
+//   socket.on("message", async function (data) {
+//     // if (data.msg == "joinadmmin") {
       
-    // }
-    // if (data.msg == "get_page") {
+//     // }
+//     // if (data.msg == "get_page") {
       
-    // }
-  });
+//     // }
+//   });
  
-}
+// }

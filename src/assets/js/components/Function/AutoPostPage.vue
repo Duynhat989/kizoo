@@ -52,11 +52,11 @@ textarea {
 }
 </style>
 <template>
-    <h4>{{ languagePack["AUTO_GROUP_POST"] }}</h4>
+    <h4>{{ languagePack["AUTO_POST_PAGE"] }}</h4>
     <div class="AUTO_GROUP_POST_CONTENT">
         <div class="row">
             <div class="left col-xl-12 col-md-12 col-12">
-                <div class="left_content">
+                <!-- <div class="left_content">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="validationCustom04" class="form-label">{{ languagePack['TYPE_UPLOAD'] }}</label>
@@ -65,10 +65,9 @@ textarea {
                                 <option value="1">{{ languagePack['AUTO_GROUP_POST_1'] }}</option>
                                 <option value="2">{{ languagePack['AUTO_GROUP_POST_2'] }}</option>
                             </select>
-                            <label for="validationCustom04" class="form-label">{{ languagePack['SELECT_LIST_PAGE'] }}</label>
+                            <label for="validationCustom04" class="form-label">{{ languagePack['LIST_PAGE'] }}</label>
                             <select class="form-select">
-                                <option value="0" selected>{{ languagePack['PROFILE_MEMBER'] }}</option>
-                                <option v-for="item in pages" :value="[item.id,item.access_token]">{{ item.name
+                                <option v-for="item in pages" :value="item.id" :data-token="item.access_token">{{ item.name
                                 }}</option>
                             </select>
                         </div>
@@ -115,6 +114,66 @@ textarea {
                             }}</button>
                         </div>
                     </div>
+                </div> -->
+                <div class="save">
+                    <button class="btn btn-outline-primary" @click="save" type="submit">{{ languagePack['NEW']
+                    }}</button>
+                    <button class="btn btn-outline-success" @click="run" type="submit">{{ languagePack['MANAGER']
+                    }}</button>
+                    <button class="btn btn-outline-warning" @click="stop" type="submit">{{ languagePack['HISTORY']
+                    }}</button>
+                </div>
+            </div>
+            <div class="center col-xl-12 col-md-12 col-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>Age</th>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Sex</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Anna</td>
+                                <td>Pitt</td>
+                                <td>35</td>
+                                <td>New York</td>
+                                <td>USA</td>
+                                <td>Female</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="right col-xl-12 col-md-12 col-12">
@@ -209,22 +268,14 @@ const run = async () => {
                 textNotify(`${languagePack["FIND_POST"]} ${item_post.post_id}`)
                 var pst = item_post
                 var photos = []
-                try {
-                    if (pst.attachments.hasOwnProperty('count')) {
-                        for (const node of pst.attachments.nodes) {
-                            var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token_global.value)
-                            photos.push(id_photo)
-                        }
+                if (pst.attachments.hasOwnProperty('count')) {
+                    for (const node of pst.attachments.nodes) {
+                        var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token_global.value)
+                        photos.push(id_photo)
                     }
-                    if (pst.message != null && pst.message.length > 3) {
-                        var res = await uploadPost(pst.message, photos, access_token_global.value, group_id.value)
-                        textNotify(`${languagePack["UPLOAD_POST"]} ${res}`)
-                    }else{
-                        textNotify(`${languagePack["NOT_SUP"]} ${res.post_id}`)
-                    }
-                } catch (error) {
-                    textNotify(`${languagePack["NOT_SUP"]} ${item_post.post_id}`)
                 }
+                var res = await uploadPost(pst.message, photos, access_token_global.value, group_id.value)
+                textNotify(`${languagePack["UPLOAD_POST"]} ${res}`)
             }
         }
         //scan bài viết-----------

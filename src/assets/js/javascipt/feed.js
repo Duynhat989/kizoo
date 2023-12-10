@@ -1,4 +1,4 @@
-const feed_group_post = async (user_id,group_id) => {
+const feed_group_post = async (user_id, group_id, fb_dtsg, cursor) => {
   try {
     var urlencoded = new URLSearchParams();
     urlencoded.append("av", user_id);
@@ -22,15 +22,14 @@ const feed_group_post = async (user_id,group_id) => {
       "fb_api_req_friendly_name:",
       "GroupsCometFeedRegularStoriesPaginationQuery"
     );
-    urlencoded.append("doc_id", "24594778310135636");
+    urlencoded.append("doc_id", "8350149461667055");
     urlencoded.append(
       "variables",
       JSON.stringify({
         UFI2CommentsProvider_commentsKey:
           "CometGroupDiscussionRootSuccessQuery",
-        count: 10,
-        cursor:
-          "",
+        count: 3,
+        cursor: cursor,
         displayCommentsContextEnableComment: null,
         displayCommentsContextIsAdPreview: null,
         displayCommentsContextIsAggregatedShare: null,
@@ -51,7 +50,7 @@ const feed_group_post = async (user_id,group_id) => {
         __relay_internal__pv__IsMergQAPollsrelayprovider: false,
         __relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider: false,
         __relay_internal__pv__CometUFIIsRTAEnabledrelayprovider: false,
-        __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: false,
+        __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
         __relay_internal__pv__StoriesRingrelayprovider: false,
       })
     );
@@ -59,8 +58,7 @@ const feed_group_post = async (user_id,group_id) => {
       urlencoded,
       "https://www.facebook.com/api/graphql/"
     );
-    var res = await data.json();
-    return res;
+    return data;
   } catch (error) {
     return null;
   }
@@ -77,6 +75,36 @@ async function get_request(url_request) {
     return "error";
   }
 }
+async function get_fb_dtsg() {
+  try {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let response = await fetch("https://m.facebook.com", requestOptions);
+    if (response.status === 200) {
+      var data = await response.text();
+      var act_id = data.match('fb_dtsg" value="(.*?)"')[1];
+      return act_id;
+    } else {
+      return "false";
+    }
+  } catch (error) {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let response = await fetch("https://mbasic.facebook.com", requestOptions);
+    if (response.status === 200) {
+      var data = await response.text();
+      var act_id = data.match('fb_dtsg" value="(.*?)"')[1];
+      return act_id;
+    } else {
+      return "false";
+    }
+  }
+}
+
 const requestPost = async (body, url, profile_id = null) => {
   try {
     var myHeaders = new Headers();
@@ -98,4 +126,5 @@ const requestPost = async (body, url, profile_id = null) => {
 };
 module.exports = {
   feed_group_post,
+  get_fb_dtsg,
 };
