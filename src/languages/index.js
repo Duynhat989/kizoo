@@ -36,6 +36,7 @@ export const setLanguage = (language) => {
   localStorage.setItem("locations", JSON.stringify(locations));
   location.reload()
 };
+
 export const getLanguage = () => {
   const locations = JSON.parse(localStorage.getItem("locations")) || {};
   return locations.language 

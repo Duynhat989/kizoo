@@ -64,6 +64,9 @@
         <button class="btn" @click="language()">
             <i class='bx bx-world' ></i> {{  languagePack["LANGUAGE"] }}
         </button>
+        <button class="btn" @click="logout">
+            <i class='bx bx-log-in' ></i> {{  languagePack["LOGOUT"] }}
+        </button>
     </div>
     <PopLanguage v-if="setLang"/>
 </template>
@@ -83,6 +86,7 @@ import {
 import PopLanguage from './Layouts/PopLanguage'
 const someValue = ref('');
 const setLang = ref(false);
+import { get_key,set_key } from '../javascipt/user'
 
 function changeValueAndEmit(route) {
     someValue.value = route;
@@ -90,5 +94,9 @@ function changeValueAndEmit(route) {
 }
 const language = async () => {
     setLang.value = true
+}
+const logout = async () => {
+    await set_key('','user')
+    location.reload()
 }
 </script>

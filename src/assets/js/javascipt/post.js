@@ -25,6 +25,33 @@ async function uploadImages(xpath, id_group, access_token) {
     return "";
   }
 }
+async function uploadImagesPage(xpath, id_group, access_token,message) {
+  try {
+    var myHeaders = new Headers();
+    var formdata = new FormData();
+    formdata.append("access_token", access_token);
+    formdata.append("url", xpath);
+    formdata.append("message", message);
+    formdata.append("published", true);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    var res = await fetch(
+      `https://graph.facebook.com/${id_group}/photos`,
+      requestOptions
+    );
+    var req = await res.text();
+    console.log(req);
+    var result = JSON.parse(req);
+    return result.id;
+  } catch (error) {
+    return "";
+  }
+}
 
 async function get_request(url_request) {
   try {
@@ -74,4 +101,5 @@ module.exports = {
   get_request,
   uploadPost,
   uploadImages,
+  uploadImagesPage
 };

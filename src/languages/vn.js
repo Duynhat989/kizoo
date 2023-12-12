@@ -14,6 +14,15 @@ const lang = {
     "NEW":"Thêm mới",
     "MANAGER":"Quản lý",
     "HISTORY":"Lịch sử đăng bài",
+    "USERNAME":"Tên đăng nhập hoặc email",
+    "PASSWORD":"Mật khẩu",
+    "REMEMBER_PASSWORD":"Nhớ mật khẩu",
+    "LOGIN":"Đăng nhập",
+    "LOGOUT":"Đăng xuất",
+    "SLOGAN":"Tiện ích cho mọi nhu cầu",
+    "WEBSITE":"Chi tiết xem vui lòng xem tại website",
+    "NOT_USER_PASSWORD":"Tài khoản hoặc mật khẩu không đúng",
+    "LOGIN_SUCCESS":"Đăng nhập thành công",
 
 
     "LOGIN_TITLE":"Kizoo - Facebook manager (Phiên bản: v1.0.0)",

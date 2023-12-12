@@ -65,10 +65,11 @@ textarea {
                                 <option value="1">{{ languagePack['AUTO_GROUP_POST_1'] }}</option>
                                 <option value="2">{{ languagePack['AUTO_GROUP_POST_2'] }}</option>
                             </select>
-                            <label for="validationCustom04" class="form-label">{{ languagePack['SELECT_LIST_PAGE'] }}</label>
-                            <select class="form-select">
+                            <label for="validationCustom04" class="form-label">{{ languagePack['SELECT_LIST_PAGE']
+                            }}</label>
+                            <select class="form-select" v-model="selected_page">
                                 <option value="0" selected>{{ languagePack['PROFILE_MEMBER'] }}</option>
-                                <option v-for="item in pages" :value="[item.id,item.access_token]">{{ item.name
+                                <option v-for="item in pages" :value="[item.id, item.access_token]">{{ item.name
                                 }}</option>
                             </select>
                         </div>
@@ -158,6 +159,7 @@ const notify = ref('')
 const access_token_global = ref('')
 const pages = ref()
 
+const selected_page = ref(0)
 
 const running = ref(false)
 onMounted(async () => {
@@ -199,6 +201,16 @@ const run = async () => {
     textNotify(languagePack["RUNNING"])
     running.value = true
     cursor.value = ''
+    let access_token = access_token_global.value
+    console.log(selected_page.value)
+    if (selected_page.value != 0) {
+        access_token = selected_page.value[1]
+        runStatus(access_token, true)
+    } else {
+        runStatus(access_token)
+    }
+}
+const runStatus = async (access_token, isProfile = false) => {
     var fb_dtsg = await get_fb_dtsg()
     if (type.value == 2) {
         var lst = await autoClarmGroup(fb_dtsg)
@@ -211,16 +223,27 @@ const run = async () => {
                 var photos = []
                 try {
                     if (pst.attachments.hasOwnProperty('count')) {
-                        for (const node of pst.attachments.nodes) {
-                            var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token_global.value)
-                            photos.push(id_photo)
+                            for (const node of pst.attachments.nodes) {
+                                var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token)
+                                photos.push(id_photo)
+                            }
                         }
+                    if (isProfile) {
+                        var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token,pst.message)
                     }
-                    if (pst.message != null && pst.message.length > 3) {
-                        var res = await uploadPost(pst.message, photos, access_token_global.value, group_id.value)
-                        textNotify(`${languagePack["UPLOAD_POST"]} ${res}`)
-                    }else{
-                        textNotify(`${languagePack["NOT_SUP"]} ${res.post_id}`)
+                    else {
+                        if (pst.attachments.hasOwnProperty('count')) {
+                            for (const node of pst.attachments.nodes) {
+                                var id_photo = await uploadImages(node.media.image.uri, group_id.value, access_token)
+                                photos.push(id_photo)
+                            }
+                        }
+                        if (pst.message != null && pst.message.length > 3) {
+                            var res = await uploadPost(pst.message, photos, access_token, group_id.value)
+                            textNotify(`${languagePack["UPLOAD_POST"]} ${res}`)
+                        } else {
+                            textNotify(`${languagePack["NOT_SUP"]} ${res.post_id}`)
+                        }
                     }
                 } catch (error) {
                     textNotify(`${languagePack["NOT_SUP"]} ${item_post.post_id}`)

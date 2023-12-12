@@ -1,18 +1,20 @@
 <style scoped>
 .wrapper {
     background-color: white;
-    min-height: 100vh;
+    min-height: 92vh;
 }
-.left{
+
+.left {
     background-color: #fc816b;
-    min-height: 100vh;
+    min-height: 92vh;
 }
-.right{
-    min-height: 100vh;
+
+.right {
+    min-height: 92vh;
 }
 </style>
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-if="isLogin">
         <HeaderTop />
         <div class="container-fluid">
             <div class="row">
@@ -29,14 +31,17 @@
             </div>
         </div>
     </div>
+    <div class="login-form" v-else>
+        <Login />
+    </div>
 </template>
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import {
-  languagePack,
-  setLanguage,
-  LangList,
-  localtionsLang,
+    languagePack,
+    setLanguage,
+    LangList,
+    localtionsLang,
 } from '../../../languages/index';
 import HeaderTop from './Layouts/Header'
 import LeftTop from './Left'
@@ -45,22 +50,27 @@ import Product from './Right/Product'
 import Setup from './Right/Setup'
 import Store from './Right/Store'
 import Utilities from './Right/Utilities'
-
-const { get_token_eaab,get_fb_dtsg } = require('../javascipt/request')
-const { set_token,get_token } = require('../javascipt/data')
-const { load_pending } = require('../javascipt/group')
-
-
+import Login from './Login'
+import { get_key,set_key } from '../javascipt/user'
 const main = ref(false)
+
+const isLogin = ref(false)
+
 const receivedData = ref('HOME')
 function updateReceivedData(newData) {
-  receivedData.value = newData;
+    receivedData.value = newData;
 }
-onMounted(async ()=>{
-    setTimeout(()=>{
-        main.value = true
-    },1000)
-    document.title = languagePack["LOGIN_TITLE"];
+onMounted(async () => {
+    var user = await get_key('user')
+    if (user.fullname) {
+        isLogin.value = true
+        setTimeout(() => {
+            main.value = true
+        }, 1000)
+        document.title = languagePack["LOGIN_TITLE"];
+    }else{
+        await set_key('','user')
+    }
 })
 
 

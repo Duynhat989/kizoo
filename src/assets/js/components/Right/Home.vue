@@ -52,7 +52,7 @@ textarea{
                     <AutoPostPage />
                 </div>
                 <div class="AUTO_POST_SCHEDULE" v-else>
-                    {{ languagePack["UPDATE"] }}
+                    <AutoPostGroup />
                 </div>
             </div>
 
@@ -74,6 +74,7 @@ import Box from '../Item/Box'
 import AutoPost from '../Function/AutoPost'
 import AutoApprove from '../Function/AutoApprove'
 import AutoPostPage from '../Function/AutoPostPage'
+import AutoPostGroup from '../Function/AutoPostGroup'
 
 
 

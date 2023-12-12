@@ -60,10 +60,18 @@ const set_key = async (token,key) => {
     return null;
   }
 };
+const get_key = async (key) => {
+  try {
+    return await JSON.parse(localStorage.getItem(key)) || {}
+  } catch (error) {
+    return {}
+  }
+};
 module.exports = {
   set_token,
   get_token,
   get_info_facebook,
   set_key,
+  get_key,
   get_page_facebook
 };
