@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Kizoo Group",
+  "description": "Kizoo Group",
+  "version": "1.0.3",
+  "background": {
+    "scripts": ["./js/background.js"],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": "./images/icon-48x48.png",
+    "default_title": "Kizoo Group"
+  },
+  "icons": {
+    "16": "./images/icon-16x16.png",
+    "48": "./images/icon-48x48.png",
+    "128": "./images/icon-128x128.png"
+  },
+  "permissions": [
+    "scripting",
+    "contextMenus",
+    "cookies",
+    "activeTab",
+    "tabs",
+    "storage", 
+    "webRequest",
+    "webRequestBlocking",
+    "background",
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    "./js/socket.io.js"
+  ],
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["./js/content.js"],
+    "run_at": "document_end"
+  }],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
