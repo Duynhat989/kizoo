@@ -78,11 +78,11 @@ img {
                 </div>
                 <div class="mt-3">
                     <p class="detail">{{ languagePack["WEBSITE"] }} <a target="_blank"
-                            href="https://kizoovn.com">kizoovn.com</a></p>
+                            :href="env.domain">{{ env.site }}</a></p>
                 </div>
-                <div class="">
+                <!-- <div class=""> -->
                     <!-- <p class="detail" @click="language"><i class='bx bx-world'></i> {{ languagePack["LANGUAGE"] }}</p> -->
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -98,19 +98,11 @@ import {
     getLanguage
 } from '../../../languages/index'
 import { set_key } from '../javascipt/user'
-const setLang = ref(false);
+const env = require('../config/env.js')
 
 
 const userName = ref('');
 const passWord = ref('');
-
-
-const domain = ref('http://kizoovn.com');
-
-const language = async () => {
-    setLang.value = true
-}
-
 const loginAccount = async () => {
     if (userName.value.length == 0 || passWord.value.length == 0) {
         Swal.fire({
@@ -162,7 +154,7 @@ const login = async () => {
         body: urlencoded,
         redirect: 'follow'
     };
-    var reponsive = await fetch(`${domain.value}/api/user/login`, requestOptions)
+    var reponsive = await fetch(`${env.domain}/api/user/login`, requestOptions)
     var text = await reponsive.text()
     var res = JSON.parse(text)
     return res
@@ -177,7 +169,7 @@ const info = async (access_token) => {
         body: urlencoded,
         redirect: 'follow'
     };
-    var reponsive = await fetch(`${domain.value}/api/user/info`, requestOptions)
+    var reponsive = await fetch(`${env.domain}/api/user/info`, requestOptions)
     var text = await reponsive.text()
     var res = JSON.parse(text)
     return res

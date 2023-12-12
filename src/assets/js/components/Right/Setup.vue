@@ -82,9 +82,9 @@ h6 span{
 import { ref, onMounted, reactive } from 'vue';
 import Loadding from '../Layouts/Loadding'
 import { get_key, set_key } from '../../javascipt/user'
+const env = require('../../config/env.js');
 const main = ref(false)
 
-const domain = ref('http://kizoovn.com');
 const user_access = ref({})
 
 onMounted(async () => {
@@ -106,7 +106,7 @@ const info = async (access_token) => {
         body: urlencoded,
         redirect: 'follow'
     };
-    var reponsive = await fetch(`${domain.value}/api/user/info`, requestOptions)
+    var reponsive = await fetch(`${env.domain}/api/user/info`, requestOptions)
     var text = await reponsive.text()
     var res = JSON.parse(text)
     return res
