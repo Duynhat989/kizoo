@@ -17,15 +17,24 @@
         background-position: 0% 50%;
     }
 }
+
 /* box */
 
 .history {
     padding-top: 30px;
 }
-textarea{
+
+textarea {
     min-height: 50vh;
     border: none;
     outline: none;
+}
+
+.fixed-postion {
+    position: fixed;
+    top: 5%;
+    left: 0;
+    width: 100%;
 }
 </style>
 
@@ -55,37 +64,62 @@ textarea{
                     <AutoPostGroup />
                 </div>
             </div>
-
         </div>
         <Loadding v-else />
+        <div class="fixed-postion">
+            <Cookie v-if="isShowCookie" @update:isShowAdd="isShow" :type="'group'" />
+        </div>
     </div>
 </template>
 
 <script setup>
-import {
-    languagePack,
-    setLanguage,
-    LangList,
-    localtionsLang,
-} from '../../../../languages/index'
-import { ref, onMounted } from 'vue'
+import { languagePack } from '../../../../languages/index'
+import { ref, onMounted, watch } from 'vue'
 import Loadding from '../Layouts/Loadding'
 import Box from '../Item/Box'
 import AutoPost from '../Function/AutoPost'
 import AutoApprove from '../Function/AutoApprove'
 import AutoPostPage from '../Function/AutoPostPage'
 import AutoPostGroup from '../Function/AutoPostGroup'
+import Cookie from '../Layouts/Cookie'
+import { get_key, set_key } from '../../javascipt/user'
 
 
 
 
 const main = ref(false)
 const isUpPost = ref(1)
-onMounted(() => {
+
+
+const isShowCookie = ref(false)
+onMounted(async () => {
     setTimeout(() => {
         main.value = true
     }, 500)
 })
+watch(isUpPost, async (newValue, oldValue) => {
+    var pic = 5 - isUpPost.value
+    if (pic < 3) {
+        var sup = await get_key('accept')
+        if (sup.active) {
+            isShowCookie.value = false
+        }
+        else {
+            isShowCookie.value = true
+        }
+    }
+})
+const isShow = async (item) => {
+    if (item == 'accept') {
+        await set_key('{"active":true}', 'accept')
+        isShowCookie.value = false
+    } else {
+        localStorage.removeItem('accept')
+        isUpPost.value = 1
+        isShowCookie.value = false
+
+    }
+}
 const clickItem = async (item) => {
     isUpPost.value = item
 }

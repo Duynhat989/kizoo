@@ -55,20 +55,20 @@
             <i class='bx bxs-network-chart' ></i> {{  languagePack["ORTHER"] }}
         </button> -->
         <!--  -->
-        <button class="btn" @click="changeValueAndEmit('CONTACT')">
+        <!-- <button class="btn" @click="changeValueAndEmit('CONTACT')">
             <i class='bx bxs-contact' ></i> {{  languagePack["CONTACT"] }}
+        </button> -->
+        <button class="btn" @click="language()">
+            <i class='bx bx-world' ></i> {{  languagePack["LANGUAGE"] }}
         </button>
         <button class="btn" @click="changeValueAndEmit('SETUP')">
             <i class='bx bx-cog' ></i> {{  languagePack["SETUP"] }}
-        </button>
-        <button class="btn" @click="language()">
-            <i class='bx bx-world' ></i> {{  languagePack["LANGUAGE"] }}
         </button>
         <button class="btn" @click="logout">
             <i class='bx bx-log-in' ></i> {{  languagePack["LOGOUT"] }}
         </button>
     </div>
-    <PopLanguage v-if="setLang"/>
+    <PopLanguage v-if="setLang" @update:dataFromChild="closeLanguage" />
 </template>
 <script setup>
 
@@ -88,6 +88,12 @@ const someValue = ref('');
 const setLang = ref(false);
 import { get_key,set_key } from '../javascipt/user'
 
+
+function closeLanguage() {
+    setLang.value = false;
+}
+
+
 function changeValueAndEmit(route) {
     someValue.value = route;
     emit('update:dataFromChild', someValue.value);
@@ -96,7 +102,8 @@ const language = async () => {
     setLang.value = true
 }
 const logout = async () => {
-    await set_key('','user')
+    localStorage.removeItem('user')
+    localStorage.removeItem('auth')
     location.reload()
 }
 </script>

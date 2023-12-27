@@ -11,6 +11,7 @@
     "watch": "npm run local -- --watch"
   },
   "dependencies": {
+    "axios": "^1.6.2",
     "boxicons": "^2.1.4",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",

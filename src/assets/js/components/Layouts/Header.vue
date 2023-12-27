@@ -9,13 +9,15 @@
 }
 h1{
     text-transform: uppercase;
-    font-size: 1.75em;
+    font-size: 1.2em;
+    margin: 0;
+    padding-top: 15px;
 }
 </style>
 <template>
     <div class="header">
         <h1><i class='bx bxs-face-mask' ></i> Kizoo Group</h1> 
-        <span> --- Manager Group Admin --- </span>
+        <span> --------- <i class='bx bx-shield-alt-2'></i> --------- </span>
     </div>
 </template>
 <script setup>

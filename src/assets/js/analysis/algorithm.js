@@ -74,9 +74,7 @@ const index = async (comment,language) => {
   await prepare(language);
   var arrayResult = get_result_new_comment(comment);
   console.log(arrayResult);
-  //Lọc ra lượt
-  //var arrayList = [];
-  //trường hợp k = 1;
+  //Lọc ra lượt--------------------
   var minTopic = 999999999;
   var minObj = new Object();
   for (var i = 0, iLen = arrayResult.length; i < iLen; i++) {

@@ -33,25 +33,40 @@ const save_auto_approve = async (type_1,
   type_3,
   keyword_1,
   keyword_2,
-  keyword_3
+  keyword_3,
+  check_1,
+  check_2,
+  check_3,
+  count_delay,
+  count_pending,
+  lst_group,
+
+
+
 ) => {
   try {
     var data = {
       type_1: {
+        check:check_1,
         type: type_1,
         auto: {},
         manual: keyword_1,
       },
       type_2: {
+        check:check_2,
         type: type_2,
         auto: {},
         manual: keyword_2,
       },
       type_3: {
+        check:check_3,
         type: type_3,
         auto: {},
         manual: keyword_3,
       },
+      count_delay:count_delay,
+      count_pending:count_pending,
+      lst_group:lst_group
     };
     localStorage.setItem("save_auto_approve", JSON.stringify(data));
   } catch (error) {

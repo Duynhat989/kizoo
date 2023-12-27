@@ -77,11 +77,11 @@ img {
                     <a type="button" @click="loginAccount" class="btn btn-primary">{{ languagePack["LOGIN"] }}</a>
                 </div>
                 <div class="mt-3">
-                    <p class="detail">{{ languagePack["WEBSITE"] }} <a target="_blank"
-                            :href="env.domain">{{ env.site }}</a></p>
+                    <p class="detail">{{ languagePack["WEBSITE"] }} <a target="_blank" :href="env.domain">{{ env.site }}</a>
+                    </p>
                 </div>
                 <!-- <div class=""> -->
-                    <!-- <p class="detail" @click="language"><i class='bx bx-world'></i> {{ languagePack["LANGUAGE"] }}</p> -->
+                <!-- <p class="detail" @click="language"><i class='bx bx-world'></i> {{ languagePack["LANGUAGE"] }}</p> -->
                 <!-- </div> -->
             </div>
         </div>
@@ -91,13 +91,10 @@ img {
 
 import { ref } from 'vue';
 import {
-    languagePack,
-    setLanguage,
-    LangList,
-    localtionsLang,
-    getLanguage
+    languagePack
 } from '../../../languages/index'
 import { set_key } from '../javascipt/user'
+import request from '../utils/request.js';
 const env = require('../config/env.js')
 
 
@@ -114,24 +111,22 @@ const loginAccount = async () => {
     }
     var res = await login()
     if (res.status) {
-        set_key(JSON.stringify(res),'auth')
-        res = await info(res.auth)
+        res = await info()
         if (res.status) {
-            set_key(JSON.stringify(res.user),'user')
             Swal.fire({
                 title: "Good job!",
                 text: languagePack["LOGIN_SUCCESS"],
                 icon: "success"
             });
-            setTimeout(()=> {
+            setTimeout(() => {
                 location.reload()
-            },2000)
-        }else{
+            }, 2000)
+        } else {
             Swal.fire({
-            title: "Error!",
-            text: languagePack["NOT_USER_PASSWORD"],
-            icon: "error"
-        });
+                title: "Error!",
+                text: languagePack["NOT_USER_PASSWORD"],
+                icon: "error"
+            });
         }
     } else {
         Swal.fire({
@@ -143,35 +138,35 @@ const loginAccount = async () => {
     }
 }
 const login = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("username", userName.value.trim());
-    urlencoded.append("password", passWord.value.trim());
-    var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
-    };
-    var reponsive = await fetch(`${env.domain}/api/user/login`, requestOptions)
-    var text = await reponsive.text()
-    var res = JSON.parse(text)
-    return res
+    return new Promise(async (resolve, reject) => {
+        var userInfo = {
+            username: userName.value.trim(),
+            password: passWord.value.trim(),
+        }
+        await request.post('/user/login', userInfo)
+            .then((response) => {
+                set_key(JSON.stringify(response.data), 'auth')
+                resolve(response.data)
+            })
+            .catch((e) => {
+                resolve(false)
+            });
+    });
+
 }
-const info = async (access_token) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bear ${access_token}`);
-    var urlencoded = new URLSearchParams();
-    var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
-    };
-    var reponsive = await fetch(`${env.domain}/api/user/info`, requestOptions)
-    var text = await reponsive.text()
-    var res = JSON.parse(text)
-    return res
+const info = async () => {
+    return new Promise(async (resolve, reject) => {
+        const token = JSON.parse(localStorage.getItem("auth") || "{}");
+        const refreshToken = token.auth;
+        request.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
+        await request.post('/user/info', {})
+            .then((response) => {
+                set_key(JSON.stringify(response.data.user), 'user')
+                resolve(response.data)
+            })
+            .catch((e) => {
+                resolve(false)
+            });
+    });
 }
 </script>

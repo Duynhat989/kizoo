@@ -53,6 +53,7 @@ import Utilities from './Right/Utilities'
 import Login from './Login'
 import { get_key, set_key } from '../javascipt/user'
 import Loadding from '../components/Layouts/Loadding'
+import request from '../utils/request.js';
 // import Loadding_1 from '../components/Layouts/Loadding_1'
 const main = ref(false)
 
@@ -63,19 +64,31 @@ function updateReceivedData(newData) {
     receivedData.value = newData;
 }
 onMounted(async () => {
-    var user = await get_key('user')
-    if (user.fullname) {
+    var auth = await get_key('auth')
+    var user = await info(auth.auth)
+    if (user.status) {
+        set_key(JSON.stringify(user.user), 'user')
         isLogin.value = true
         document.title = languagePack["LOGIN_TITLE"];
     } else {
-        await set_key('', 'user')
+        localStorage.getItem('user')
+        localStorage.getItem('auth')
     }
 
     setTimeout(() => {
         main.value = true
     }, 2000)
 })
-
-
+const info = async () => {
+    return new Promise(async (resolve, reject) => {
+        await request.post('/user/info', {})
+        .then((response) => {
+            resolve(response.data)
+        })
+        .catch((e) => {
+            resolve(false)
+        });
+    });
+}
 
 </script>

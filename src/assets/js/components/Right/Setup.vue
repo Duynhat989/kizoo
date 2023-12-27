@@ -36,13 +36,16 @@
     padding: 20px;
     padding-top: 60px;
 }
-h6{
+
+h6 {
     margin-bottom: 15px;
 }
-h6 span{
+
+h6 span {
     color: orangered;
 }
-.access-token{
+
+.access-token {
     width: 70%;
     border: none;
     padding: 5px 10px;
@@ -50,6 +53,11 @@ h6 span{
     font-size: 15px;
     color: orangered;
 }
+
+.copy {
+    cursor: pointer;
+}
+
 /* box */
 </style>
 <template>
@@ -62,18 +70,62 @@ h6 span{
                 <img class="avata-img" src="../../../images/avata.jpg" alt="avata people">
             </div>
             <div class="infomation">
-                <h4>Thông tin tài khoản</h4>
-                <hr>
-                <h6>Tên tài khoản: <span>{{ user_access.fullname }}</span></h6>
-                <hr>
-                <h6>Email: <span>{{ user_access.email }}</span></h6>
-                <hr>
-                <h6>Điện thoại: <span>{{ user_access.phonenumber }}</span></h6>
-                <hr>
-                <h6>Trạng thái tài khoản: <span>{{ user_access.verify }}</span></h6>
-                <hr>
-                <h6>Access token: <input class="access-token" type="text" :value="user_access.access_token" placeholder="Access token"></h6>
+                <div class="row">
+                    <div class="col-xl-4 col-12">
+                        <div class="left">
+                            <h4>Thông tin tài khoản</h4>
+                            <hr>
+                            <h6>Tên tài khoản: <span>{{ user_access.fullname }}</span></h6>
+                            <hr>
+                            <h6>Email: <span>{{ user_access.email }}</span></h6>
+                            <hr>
+                            <h6>Điện thoại: <span>{{ user_access.phonenumber }}</span></h6>
+                            <hr>
+                            <h6>Trạng thái tài khoản: <span v-if="user_access.verify != ''">Active</span><span v-else>No
+                                    verify</span></h6>
+                            <hr>
+                            <h6>Access token: <input class="access-token" type="text" :value="user_access.access_token"
+                                    placeholder="Access token"><span class="copy"><i class='bx bx-copy'></i></span></h6>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-12">
+                        <div class="right">
+                            <div class="right_content">
+                                <!-- <h4>Thông tin tài khoản</h4>
+                                <hr>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Firstname</th>
+                                            <th>Lastname</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>John</td>
+                                            <td>Doe</td>
+                                            <td>john@example.com</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mary</td>
+                                            <td>Moe</td>
+                                            <td>mary@example.com</td>
+                                        </tr>
+                                        <tr>
+                                            <td>July</td>
+                                            <td>Dooley</td>
+                                            <td>july@example.com</td>
+                                        </tr>
+                                    </tbody>
+                                </table> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </div>
         <Loadding v-else />
     </div>

@@ -16,17 +16,31 @@
     text-align: center;
     border-radius: 7px;
     transition: all 0.5;
-    box-shadow: 2px 2px 1px rgb(128 128 128 / 31%);
+    box-shadow: 2px 2px 3px rgb(128 128 128 / 31%);
+    height: 120px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
-.box_content:hover{
+
+.box_content:hover {
     transform: scale(1.01);
+}
+
+h5 {
+    text-transform: uppercase;
+    font-weight: 400;
+
 }
 </style>
 
 <template>
-    <div class="box col-xl-3 col-md-6 col-12">
+    <div class="box col-xl-2 col-md-3 col-12">
         <div class="box_content">
-            <h5><i class='bx bx-bot'></i> {{ props.title }}</h5>
+            <div class="title">
+                <h5> {{ props.title }}</h5>
+                <h6><i class='bx bx-atom'></i></h6>
+            </div>
         </div>
     </div>
 </template>
